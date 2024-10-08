@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node Backend/index.js",
     "dev": "SET NODE_ENV=developement && nodemon Backend/index.js",
-    "build": "npm install && npm install --prefix Frontend && npm run build --prefix Frontend"
+    "build": "npm install && npm install --production=false --prefix Frontend && npm run build --prefix Frontend"
   },
   "repository": {
     "type": "git",
