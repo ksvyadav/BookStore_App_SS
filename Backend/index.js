@@ -15,7 +15,7 @@ const _dirname = path.resolve();
 
 app.use(
   cors({
-    origin: "http://localhost:5173", //https://bookstore-deploy-eight.vercel.app
+    origin: "https://bookstore-app-ss.onrender.com", //https://bookstore-app-ss.onrender.com
     credentials: true,
   })
 ); // for running backend and frontend and render backend data to frontend
