@@ -8,6 +8,7 @@ import path from "path";
 import bookRoute from "./routes/book.route.js";
 import userRoute from "./routes/user.route.js";
 import contactRoute from "./routes/contact.route.js";
+import cartRoutes from "./routes/cart.route.js";
 
 const app = express();
 
@@ -15,7 +16,7 @@ const _dirname = path.resolve();
 
 app.use(
   cors({
-    origin: "https://bookstore-app-ss.onrender.com", //https://bookstore-app-ss.onrender.com
+    origin: "https://bookstore-app-ss.onrender.com", //https://bookstore-app-ss.onrender.com http://localhost:4001 http://localhost:5173
     credentials: true,
   })
 ); // for running backend and frontend and render backend data to frontend
@@ -40,6 +41,7 @@ try {
 app.use("/book", bookRoute);
 app.use("/user", userRoute);
 app.use("/contact", contactRoute);
+app.use("/cart", cartRoutes);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(_dirname, "/Frontend/dist")));

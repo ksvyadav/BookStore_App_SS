@@ -5,8 +5,8 @@ import Footer from "./Footer";
 function About() {
   return (
     <>
-      <Navbar/>
-      <div class="relative bg-gray-900 overflow-hidden">
+      <Navbar />
+      <div class="h-screen max-w-screen-2xl container mx-auto md:px-20 px-4 flex items-center justify-center relative bg-gray-900 overflow-hidden">
         <img
           src={openbook}
           alt="About Our Bookstore"
@@ -58,7 +58,7 @@ function About() {
               <div class="relative">
                 <dt>
                   <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
-                  <svg
+                    <svg
                       class="h-6 w-6"
                       fill="none"
                       viewBox="0 0 24 24"
@@ -86,7 +86,7 @@ function About() {
               <div class="relative">
                 <dt>
                   <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
-                  <svg
+                    <svg
                       class="h-6 w-6"
                       fill="none"
                       viewBox="0 0 24 24"
@@ -117,7 +117,7 @@ function About() {
           </div>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </>
   );
 }
