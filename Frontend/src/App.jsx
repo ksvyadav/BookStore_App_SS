@@ -7,6 +7,7 @@ import { useAuth } from "./context/AuthProvider";
 import Home from "./home/Home";
 import Courses from "./courses/Courses";
 import Signup from "./components/Signup";
+import Dashboard from "./components/Dashboard";
 import Contact from "./components/Contact";
 import MyCart from "./cart/Cart";
 import About from "./components/About";
@@ -20,6 +21,17 @@ const ProtectedRoute = ({ children }) => {
 
   if (!isAuthenticated) {
     return <Navigate to="/signup" replace />;
+  }
+
+  return children;
+};
+// protect routes that require admin access
+const CheckAdmin = ({ children }) => {
+  const { isAuthenticated } = useAuthStore();
+  const { role } = useAuthStore();
+
+  if (!isAuthenticated || role !== "admin") {
+    return <Navigate to="/" replace />;
   }
 
   return children;
@@ -61,16 +73,29 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route
             path="/course"
-            element={authUser ? <Courses /> : <Navigate to="/signup" />} //<ProtectedRoute> <Courses /></ProtectedRoute>
+            element={
+              <ProtectedRoute>
+                {" "}
+                <Courses />
+              </ProtectedRoute>
+            } // authUser ? <Courses /> : <Navigate to="/signup" />
           />
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route
+            path="/Dashboard"
+            element={
+              <CheckAdmin>
+                <Dashboard />
+              </CheckAdmin>
+            }
+          />
           <Route
             path="/MyCart"
             element={authUser ? <MyCart /> : <Navigate to="/" />}
           />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
         <Toaster />
       </div>

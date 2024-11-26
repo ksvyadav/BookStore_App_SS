@@ -2,10 +2,16 @@ import React, { useEffect, useState } from "react";
 import Login from "./Login";
 import { useAuth } from "../context/AuthProvider";
 import Logout from "./Logout";
+import { useAuthStore } from "../store/authStore.js";
 
 function navbar() {
   const [authUser, setAuthuser] = useAuth();
+  var adminhai = false;
   //console.log(authUser);
+  const { role } = useAuthStore();
+  if (role === "admin") {
+    adminhai = "true";
+  }
 
   const [theme, settheme] = useState(
     localStorage.getItem("theme") ? localStorage.getItem("theme") : "light"
@@ -47,9 +53,15 @@ function navbar() {
         <a href="/course">e-Books</a>
       </li>
       <li>
-        <div>
-          <a href="/contact">Contact</a>
-        </div>
+        {adminhai ? (
+          <div>
+            <a href="/Dashboard">Dashboard</a>
+          </div>
+        ) : (
+          <div>
+            <a href="/contact">Contact</a>
+          </div>
+        )}{" "}
       </li>
       <li>
         {authUser ? (

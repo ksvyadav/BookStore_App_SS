@@ -6,6 +6,7 @@ axios.defaults.withCredentials = true;
 
 export const useAuthStore = create((set) => ({
   user: null,
+  role: "user", // Add role to store user's role for authorization purposes.
   isAuthenticated: false,
   error: null,
   isLoading: false,
@@ -19,6 +20,7 @@ export const useAuthStore = create((set) => ({
         user: response.data.user,
         isAuthenticated: true,
         isCheckingAuth: false,
+        role: response.data.user.role,
       });
     } catch (error) {
       set({ error: null, isCheckingAuth: false, isAuthenticated: false });

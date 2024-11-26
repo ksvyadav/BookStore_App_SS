@@ -4,33 +4,57 @@ import { generateTokenAndSetCookie } from "../utils/generateTokenAndSetCookie.js
 
 export const signup = async (req, res) => {
   try {
-    const { fullname, email, password } = req.body;
-    const user = await User.findOne({ email });
-    if (user) {
+    const { fullname, email, password, adminCode } = req.body;
+
+    // Check if the user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
       return res.status(400).json({ message: "User already exists!" });
     }
+
+    // Validate password strength (optional)
+    if (password.length < 6) {
+      return res
+        .status(400)
+        .json({ message: "Password must be at least 6 characters." });
+    }
+
+    // Determine role based on adminCode
+    let role = "user"; // Default role
+    if (adminCode === process.env.ADMIN_INVITE_CODE) {
+      role = "admin"; // Promote to admin role if code matches
+    } else if (adminCode) {
+      return res.status(403).json({ message: "Invalid admin code!" });
+    }
+
+    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create the user
     const createdUser = new User({
-      fullname: fullname,
-      email: email,
+      fullname,
+      email,
       password: hashedPassword,
+      role,
     });
+
     await createdUser.save();
 
-    //jwt token implementation
+    // Generate a token and send a response
     generateTokenAndSetCookie(res, createdUser._id);
 
-    await res.status(201).json({
+    res.status(201).json({
       message: "User created successfully!",
       user: {
         id: createdUser._id,
         fullname: createdUser.fullname,
         email: createdUser.email,
+        role: createdUser.role,
       },
     });
   } catch (error) {
-    console.error("Error:" + error.message);
-    res.status(500).json({ mesage: "internal server error" });
+    console.error("Error:", error.message);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 

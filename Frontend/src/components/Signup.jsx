@@ -14,12 +14,11 @@ import Login from "./Login";
 import FloatingShape from "./FloatingShape.jsx";
 import PasswordStrengthMeter from "./PasswordStrengthMeter.jsx";
 
-//axios.defaults.withCredentials = true;
-
 function Signup() {
   const navigate = useNavigate();
   const [isLoading, setisLoading] = useState("");
   const [pass, setPass] = useState(""); // for passwordstrengthmeter argument pass needs to set with password entered.
+
   const {
     register,
     handleSubmit,
@@ -31,12 +30,13 @@ function Signup() {
       fullname: data.fullname,
       email: data.email,
       password: data.password,
+      adminCode: data.adminCode || "", // Admin code is optional
     };
+
     setisLoading(true);
     await axios
-      .post(`${baseUrl}/user/signup`, userinfo) //this sends post request with user data from submit.
+      .post(`${baseUrl}/user/signup`, userinfo) // Sends POST request with user data
       .then((res) => {
-        //console.log(res.data);
         if (res.data) {
           setisLoading(false);
           toast.success("User Signed Up successfully!");
@@ -46,15 +46,16 @@ function Signup() {
           window.location.reload();
         }, 1000);
 
-        localStorage.setItem("users", JSON.stringify(res.data.user)); //to store user information in local storage
+        localStorage.setItem("users", JSON.stringify(res.data.user)); // Stores user information in local storage
       })
       .catch((err) => {
         if (err.response) {
           setisLoading(false);
-          toast.error("Error : " + err.response.data.message); // to give exact error message on alert
+          toast.error("Error : " + err.response.data.message); // Alerts exact error message
         }
       });
   };
+
   return (
     <>
       <Navbar />
@@ -93,7 +94,6 @@ function Signup() {
         >
           <div className="modal-box dark:bg-slate-800">
             <form onSubmit={handleSubmit(onSubmit)} method="div">
-              {/* if there is a button in form, it will close the modal */}
               <Link
                 to="/"
                 className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
@@ -110,7 +110,7 @@ function Signup() {
                   type="text"
                   {...register("fullname", { required: true })}
                   placeholder=" Name"
-                  className="max-w-md w-full form-control border-1 rounded dark:bg-slate-700"
+                  className="max-w-md w-full form-control border-1 rounded bg-gray-100 dark:bg-slate-700"
                 />
                 <br />
                 {errors.fullname && (
@@ -119,14 +119,12 @@ function Signup() {
                   </span>
                 )}
               </div>
-              {/* <!-- Email input --> */}
               <div className="mt-3 space-y-3 ">
-                {/* <label className="form-label">Email address</label> */}
                 <input
                   type="email"
                   {...register("email", { required: true })}
                   placeholder=" Email"
-                  className="max-w-md w-full form-control border-1 rounded dark:bg-slate-700"
+                  className="max-w-md w-full form-control border-1 rounded bg-gray-100 dark:bg-slate-700"
                 />
                 <br />
                 {errors.email && (
@@ -135,15 +133,12 @@ function Signup() {
                   </span>
                 )}
               </div>
-
-              {/* <!-- password input --> */}
               <div className="mt-3 space-y-3">
-                {/* <label className="form-label">Password</label> */}
                 <input
                   type="password"
                   {...register("password", { required: true })}
                   placeholder=" Password"
-                  className="max-w-md w-full form-control border-1 rounded dark:bg-slate-700"
+                  className="max-w-md w-full form-control border-1 rounded bg-gray-100 dark:bg-slate-700"
                   value={pass}
                   onChange={(e) => setPass(e.target.value)}
                 />
@@ -156,22 +151,31 @@ function Signup() {
                 <PasswordStrengthMeter password={pass} />
               </div>
 
-              {/* <!-- Submit button --> */}
+              {/* Admin Code Input */}
+              <div className="mt-3 space-y-3">
+                <input
+                  type="text"
+                  {...register("adminCode")}
+                  placeholder="Admin Code (Optional)"
+                  className="max-w-md w-full form-control border-1 rounded bg-gray-100 dark:bg-slate-700"
+                />
+              </div>
+
               <div className="flex justify-between mt-6">
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.9 }}
-                  className=" bg-green-500 hover:bg-green-600 duration-200 px-2 py-1 hover:pointer  rounded-lg"
+                  className=" bg-green-500 hover:bg-green-600 duration-200 px-2 py-1 hover:pointer rounded-lg"
                 >
                   {isLoading ? (
-                    <Loader className="w-6 h-6 animate-spin  mx-auto" />
+                    <Loader className="w-6 h-6 animate-spin mx-auto" />
                   ) : (
                     "Signup"
                   )}
                 </motion.button>
 
                 <p>
-                  Have a account?{" "}
+                  Have an account?{" "}
                   <a
                     className="cursor-pointer underline font-semibold text-blue-500"
                     onClick={() =>

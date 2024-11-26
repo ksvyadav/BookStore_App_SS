@@ -9,6 +9,7 @@ import bookRoute from "./routes/book.route.js";
 import userRoute from "./routes/user.route.js";
 import contactRoute from "./routes/contact.route.js";
 import cartRoutes from "./routes/cart.route.js";
+import adminRoutes from "./routes/admin.route.js";
 
 const app = express();
 
@@ -42,6 +43,7 @@ app.use("/book", bookRoute);
 app.use("/user", userRoute);
 app.use("/contact", contactRoute);
 app.use("/cart", cartRoutes);
+app.use("/admin", adminRoutes);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(_dirname, "/Frontend/dist")));
