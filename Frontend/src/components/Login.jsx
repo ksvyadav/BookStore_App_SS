@@ -70,7 +70,7 @@ function Login() {
               <input
                 type="email"
                 placeholder=" Email"
-                className="max-w-md w-full form-control border-1 rounded dark:bg-slate-700"
+                className="max-w-md w-full form-control border-1 rounded bg-gray-100 dark:bg-slate-700"
                 {...register("email", { required: true })}
               />
               <br />
@@ -87,7 +87,7 @@ function Login() {
               <input
                 type="password"
                 placeholder=" Password"
-                className="max-w-md w-full form-control border-1 rounded dark:bg-slate-700"
+                className="max-w-md w-full form-control border-1 rounded bg-gray-100 dark:bg-slate-700"
                 {...register("password", { required: true })}
               />
               <br />
